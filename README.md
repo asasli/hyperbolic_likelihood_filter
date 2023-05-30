@@ -1,6 +1,6 @@
 # Investigating fatter tailed likelihoods for robust inference in Gravitational Wave Astronomy
 
-This is a repository where we investigate different statistical strategies for robust inference agains data outliers, focusing on applications on Gravitational Wave Astronomy. In particular, we apply the Hyperbolic likelihood filter to different noise-knowledge scenarios. 
+This is a repository where we investigate different statistical strategies for robust inference agains data outliers, focusing on applications on Gravitational Wave Astronomy. In particular, we apply the Hyperbolic likelihood filter to different noise-knowledge scenarios. The associated paper can be found at [2305.04709](https://arxiv.org/abs/2305.04709).
 
 N Karnesis, A Sasli, N Stergioulas 2022
 
