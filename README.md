@@ -5,19 +5,17 @@ This is a repository where we investigate different statistical strategies for r
 N Karnesis, A Sasli, N Stergioulas 2022
 
 --------
-##### Black Hole Binaries 
-
-We use the [`BBHx`](https://github.com/mikekatz04/BBHx) package developed by M Katz, which includes massive-Black Hole waveforms, plus the possibility to accelerate computations using GPUs. Please visit the website and follow the installation procedure, which we briefly mention below.
+##### Installation 
 
 First we need to create a `conda` environment:
 ```
-conda create -n bbhx_env -c conda-forge gcc_linux-64 gxx_linux-64 gsl lapack=3.6.1 numpy scipy Cython cupy jupyter ipython matplotlib python=3.9
+conda create -n gpu_env -c conda-forge gcc_linux-64 gxx_linux-64 gsl lapack=3.6.1 numpy scipy Cython cupy jupyter ipython matplotlib python=3.9
 ```
 If on MACOSX, substitute `gcc_linux-64` and `gxx_linus-64` with `clang_osx-64` and `clangxx_osx-64`. We then activate the environment:
 ```
-conda activate bbhx_env
+conda activate gpu_env
 ```
-At this point, if we want to use GPUs, we need to have `cupy` installed. This is already taken cared of from our conda environment, but sometimes we might need a specific version of `cupy`. For example, for our `tensor.astro.auth.gr` machine this worked 
+Then, we need to have `cupy` installed. This is already taken cared of from our conda environment, but sometimes we might need a specific version of `cupy`. For example, for our local machine, the snipped below has worked 
 ```
 pip install cupy-cuda11x
 ```
@@ -32,7 +30,7 @@ export CUDAHOME=/usr/local/cuda-12.0
 export PATH=${PATH}:/usr/local/cuda-12.0/bin
 alias nvcc=/usr/local/cuda-12.0/bin/nvcc
 ```
-We then install the `BBHx` software by simply running `python setup.py install`.  There are a few more packages to install via `pip`, these are the 
+There are a few more packages that are useful to install via `pip`, these are the 
 ```
 h5py, tqdm, corner, chainconsumer, torch
 ```
@@ -53,7 +51,7 @@ In principle, we can already use the waveforms from the LDC software. But why no
 ```
 python setup.py install
 ```
-All the prerequisite packages for `GBGPU` have been preinstalled in our `bbhx_env` conda environmet. If we want to install the `dev` branch, we will need also the [`mathdx`](https://developer.nvidia.com/mathdx) package. We can either download the `cufftx` directory and put it inside the `GBGPU` directory, and/or  add the correct directory into the `include_dirs` variable in the `setup.py` file (after having installed the package for all users). It should look like something like this:
+All the prerequisite packages for `GBGPU` have been preinstalled in our `gpu_env` conda environmet. If we want to install the `dev` branch, we will need also the [`mathdx`](https://developer.nvidia.com/mathdx) package. We can either download the `cufftx` directory and put it inside the `GBGPU` directory, and/or  add the correct directory into the `include_dirs` variable in the `setup.py` file (after having installed the package for all users). It should look like something like this:
 ```
 "/usr/local/mathdx/nvidia-mathdx-22.11.0-Linux/nvidia/mathdx/22.11/example/cufftdx"
 "/usr/local/mathdx/nvidia-mathdx-22.11.0-Linux/nvidia/mathdx/22.11/include/cufftdx/include"
@@ -63,40 +61,30 @@ All this is doen becasue the code is under development. In the near future, inst
 --------
 ### Usage 
 
-We have created two main scripts, the `likelihood_inv_bbhx_script.py` and `likelihood_inv_ucbs_script.py` that are used for 
-* Setting up the source parameters [Black Hole or Ultra Compac Galactic Binaries]
+We have created a main scripts, the `hyperbolic_likelihood_inv_ucbs.py` that is used for 
+* Setting up the source parameters [Ultra Compac Galactic Binaries]
 * Generating the data using a specific random seed. 
 * Setting the sampler specifics [number of walkers, temperatures and total samples per walker]
 * Make some basic plots for the results.
 
 We run the scripts as
 ```
-python likelihood_inv_ucbs_script.py 1 2 3 4 5
+python likelihood_inv_ucbs_script.py 1 2 3 4
 ```
 where the input numbers correspond to the likelihood type to be run. The available types are the
 1. Gaussian likelihood, known noise, correct levels
 2. Gaussian likelihood, known noise, false levels [levels can be tuned]
 3. Gaussian likelihood, fitting the noise
 4. Hyperbolic likelihood, known noise, false levels  [levels can be tuned]
-5. Hyperbolic likelihood, known noise, correct levels
 
-We also have two scripts `plotting_script.py` and `plotting_script_ucbs.py`, used for loading the MCMC chains and making comparison plots.
+#### Outputs of `hyperbolic_likelihood_inv_ucbs.py` script
 
-#### Outputs of `likelihood_inv_bbhx_script.py` script
-
-This script creates three folders: `figs`, `chains` and `log`. Every file is saved in the proper **directory** under a name `TAG` which we have set beforehand.
-1. **`figs` directory**
-- `[TAG]_chains_llhType[likelihood_case].png`: a figure with the chains for a specific likelihood case
-
-For instance by running `python likelihood_inv_ucbs_script.py 1 2 3 4 5`, the files `[TAG]_chains_llhType1.png`, `[TAG]_chains_llhType2.png`, `[TAG]_chains_llhType3.png`, `[TAG]_chains_llhType4.png` and `[TAG]_chains_llhType5.png` are created.
+For instance by running `python hyperbolic_likelihood_inv_ucbs.py 1 2 3 4`, the files `[TAG]_chains_llhType1.png`, `[TAG]_chains_llhType2.png`, `[TAG]_chains_llhType3.png`, and `[TAG]_chains_llhType4.png` are created.
 - `[TAG]_cornerplot_llhType[likelihood_case].png`: a corner plot figure for a specific lekilehood case
 - `[TAG]_data.png`: a figure showing the "Generating data", the "signal", the correct "Noise PSD" and the "Wrong noise PSD"
 - `[TAG]smbh_low_snr_signal_only.png`: a figure showing the signal (in frequency domain) in A, E, T channels
 
 2. **`chains` directory**
 - `[TAG]_mhmcmc_chains_llhType[likelihood_case].h5`: the chains for a specific likelihood case in h5 file format
-
-3. **`logs` directory**
-- `[TAG].txt`: every printed output of the script
 
 ![Alt text](py/figs/demo.png?raw=true)
