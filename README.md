@@ -87,4 +87,4 @@ For instance by running `python hyperbolic_likelihood_inv_ucbs.py 1 2 3 4`, the 
 2. **`chains` directory**
 - `[TAG]_mhmcmc_chains_llhType[likelihood_case].h5`: the chains for a specific likelihood case in h5 file format
 
-![Alt text](py/figs/demo.png?raw=true)
+![Alt text](demo.png?raw=true)
