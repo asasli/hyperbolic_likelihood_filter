@@ -80,7 +80,7 @@ where the input numbers correspond to the likelihood type to be run. The availab
 #### Outputs of `hyperbolic_likelihood_inv_ucbs.py` script
 
 For instance by running `python hyperbolic_likelihood_inv_ucbs.py 1 2 3 4`, the files `[TAG]_chains_llhType1.png`, `[TAG]_chains_llhType2.png`, `[TAG]_chains_llhType3.png`, and `[TAG]_chains_llhType4.png` are created.
-- `[TAG]_cornerplot_llhType[likelihood_case].png`: a corner plot figure for a specific lekilehood case
+- `[TAG]_cornerplot_llhType[likelihood_case].png`: a corner plot figure for a specific likelehood case
 - `[TAG]_data.png`: a figure showing the "Generating data", the "signal", the correct "Noise PSD" and the "Wrong noise PSD"
 - `[TAG]smbh_low_snr_signal_only.png`: a figure showing the signal (in frequency domain) in A, E, T channels
 
